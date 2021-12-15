@@ -95,11 +95,7 @@ class Contract
         }
         return $accum;
     }
-//    public function getId(): ?int
-//    {
-//        return $this->id;
 
-//    }
 
     public function getName(): ?string
     {
@@ -112,18 +108,7 @@ class Contract
 
         return $this;
     }
-//    public function getSignatures(): ?string
-//    {
-//        return $this->signatures;
-//    }
-//
-//    public function setSignatures($signatures): self
-//    {
-//        $this->signatures = $signatures;
-//
-//        return $this;
 
-//    }
 
     public function getHasKing(): ?bool
     {
