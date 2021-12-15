@@ -19,7 +19,16 @@ class TrialController extends AbstractController
         $plaintiff = new Contract('plaintiff', $request->query->get('plaintiff'), false, false);
         $defendant = new Contract('defendant', $request->query->get('defendant'), false, false);
 
-        $this->getVerdict($plaintiff->getTotalValue(),$defendant->getTotalValue());
+        $this->getVerdict($plaintiff->getTotalValue(), $defendant->getTotalValue());
+
+        if ($plaintiff->getHasHash()) {
+            $diff = $this->needMore($plaintiff, $defendant);
+            dump('Plaintiff at least needs ' . ($diff +1) . ' points to win this trial');
+        }
+        if($defendant->getHasHash()){
+            $diff = $this->needMore($defendant, $plaintiff);
+            dump('Defendant at least needs ' . ($diff +1) . ' points to win this trial');
+        }
 
         return new JsonResponse(['status' => 'trial finished', Response::HTTP_OK]);
 
@@ -35,6 +44,21 @@ class TrialController extends AbstractController
         }
         if ($defendant == $plaintiff) {
             dump('It\'s a draw. The score was ' . $plaintiff . ' all ');
+        }
+    }
+
+    private function needMore(Contract $hashed, Contract $complete): int
+    {
+
+        if($hashed->getTotalValue() > $complete->getTotalValue()){
+            // entonces ya ha ganado aun teniendo un hash
+            return -1;
+        }
+        if($hashed->getTotalValue() == $complete->getTotalValue()){
+            return 0;
+        }
+        if($hashed->getTotalValue() < $complete->getTotalValue()){
+            return $complete->getTotalValue() - $hashed->getTotalValue();
         }
     }
 }
