@@ -44,20 +44,17 @@ class Contract
     /**
      * @param $name
      * @param $signature
-     * @param $has_king
-     * @param $has_hash
      */
-    public function __construct($name, $signature, $has_king, $has_hash)
+    public function __construct($name, $signature)
     {
         $this->name = $name;
         $this->signature = str_split($signature);
-        $this->has_king = $has_king;
-        $this->has_hash = $this->has_hash($this->signature);
+        $this->has_hash = $this->hasHash($this->signature);
         $this->total_value = $this->getTotal($this->signature);
     }
 
 
-    public function has_hash(array $signature): bool
+    public function hasHash(array $signature): bool
     {
         foreach ($signature as $item) {
             if ($item == '#') {
