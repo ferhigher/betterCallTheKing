@@ -75,16 +75,21 @@ class TrialCommand extends Command
         $arg2 = $input->getArgument('arg2');
 
         if (!$this->validateSignature($arg1)) {
-            $output->writeln("Max length: 3 signatures");
-            return Command::INVALID;
+            $output->writeln("First argument is not valid. Maximum 3 signatures per contract");
+            exit();
+//            return Command::INVALID;
+
         }
-
-
+        if (!$this->validateSignature($arg2)) {
+            $output->writeln("Second argument is not valid. Maximum 3 signatures per contract");
+            exit();
+//            return Command::FAILURE;
+        }
     }
 
-    private function validateSignature($arg1)
+    private function validateSignature($arg): bool
     {
-        $length = strlen($arg1);
+        $length = strlen($arg);
         if ($length > 3) {
             return false;
         }
