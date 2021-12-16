@@ -44,16 +44,19 @@ class TrialCommand extends Command
         $arg2 = $input->getArgument('arg2');
         $defendant = new Contract('Defendant', $arg2);
 
+        if ($arg1) {
+            $io->note(sprintf('You passed Plaintiff contract: %s', $arg1));
+            $io->note(sprintf('%s signatures are worth: %s points',$plaintiff->getName(), $plaintiff->getTotalValue()));
+        }
+        if ($arg2) {
+            $io->note(sprintf('You passed Defendant contract: %s', $arg2));
+            $io->note(sprintf('%s signatures are worth: %s points', $defendant->getName(),$defendant->getTotalValue()));
+
+        }
         $trial = new Trial();
 
         $trial->getVerdict($plaintiff, $defendant);
 
-        if ($arg1) {
-            $io->note(sprintf('You passed Plaintiff signatures: %s', $arg1));
-        }
-        if ($arg2) {
-            $io->note(sprintf('You passed Defendant signatures: %s', $arg2));
-        }
 
 //        if ($input->getOption('option1')) {
 //            // ...
