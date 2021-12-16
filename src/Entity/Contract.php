@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\ContractRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,22 +14,12 @@ class Contract
     private const N = 2;
     private const V = 1;
 
-//    /**
-//     * @ORM\Id
-//     * @ORM\GeneratedValue
-//     * @ORM\Column(type="integer")
-//     */
-//    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
-//    /**
-//     * @ORM\Column(type="string", length=255)
-//     */
-//    private $signatures;
 
     /**
      * @ORM\Column(type="array")

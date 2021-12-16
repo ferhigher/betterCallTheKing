@@ -60,5 +60,8 @@ class TrialController extends AbstractController
         if($hashed->getTotalValue() < $complete->getTotalValue()){
             return $complete->getTotalValue() - $hashed->getTotalValue();
         }
+
+        // TODO falta decir que firmas serían necesarias para ganar pq ademas habria que comprobar la presencia a no de rey en la firma,
+        // en ese caso una V no valdria en el teorico caso de que haga falta un punto para ganar. En ese caso haría falta una N, que son dos puntos.
     }
 }
