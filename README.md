@@ -11,10 +11,21 @@ composer install
 ```
 
 ## Execute through endpoint
+Normal trial (First phase of the exercise).
 
+```
+https://127.0.0.1:8000/trial?plaintiff=KN&defendant=NVV
+```
 
+Conjecture to guess what's needed to win using # as a signature (Second stage of the exercise).
+We will use '%23' to encode the character '#' in our url.
+
+```
+https://127.0.0.1:8000/trial?plaintiff=KN&defendant=N%23
+```
 ## Execute using command line 
 
+We will invoke our command (app:Trial) passing both contracts:
 ```bash
 php bin/console app:Trial NNN NNK
 ```
