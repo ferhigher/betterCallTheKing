@@ -2,8 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Contract;
-use App\Entity\Trial;
+use App\Model\Contract;
+use App\Model\Trial;
+use App\View\TrialResultView;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,15 +19,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class TrialCommand extends Command
 {
-    // Todo inyectar el Trial en el constructor del comando para poder usarlo luego
-   /* private Trial $trial;
+    private Trial $trial;
 
     public function __construct(Trial $trial)
     {
         parent::__construct();
         $this->trial = $trial;
     }
-*/
+
 
     protected function configure(): void
     {
@@ -46,21 +46,21 @@ class TrialCommand extends Command
 
         if ($arg1) {
             $io->note(sprintf('You passed Plaintiff contract: %s', $arg1));
-            $io->note(sprintf('%s signatures are worth: %s points',$plaintiff->getName(), $plaintiff->getTotalValue()));
+            $io->note(sprintf('%s signatures are worth: %s points', $plaintiff->getName(), $plaintiff->getTotalValue()));
         }
         if ($arg2) {
             $io->note(sprintf('You passed Defendant contract: %s', $arg2));
-            $io->note(sprintf('%s signatures are worth: %s points', $defendant->getName(),$defendant->getTotalValue()));
+            $io->note(sprintf('%s signatures are worth: %s points', $defendant->getName(), $defendant->getTotalValue()));
 
         }
-        $trial = new Trial();
 
-        $trial->getVerdict($plaintiff, $defendant);
+        $winner = $this->trial->getVerdict($plaintiff, $defendant);
 
+        $trialResult = new TrialResultView();
+        $message = $trialResult->prepareVerdict($winner, $plaintiff, $defendant);
 
-//        if ($input->getOption('option1')) {
-//            // ...
-//        }
+        $io->note(sprintf('Final verdict: %s', $message));
+
         return Command::SUCCESS;
     }
 
