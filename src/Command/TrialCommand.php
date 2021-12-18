@@ -19,6 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class TrialCommand extends Command
 {
+    const MAX = 3; // max number of signatures per contract
     private Trial $trial;
     private TrialResultView $trialResultView;
 
@@ -46,6 +47,17 @@ class TrialCommand extends Command
         $arg2 = $input->getArgument('arg2');
         $defendant = new Contract('Defendant', $arg2);
 
+
+        if (!$this->validateSignature($arg1)) {
+            $output->writeln("First argument is not valid. Maximum 3 signatures per contract");
+            return Command::INVALID;
+
+        }
+        if (!$this->validateSignature($arg2)) {
+            $output->writeln("Second argument is not valid. Maximum 3 signatures per contract");
+            return Command::INVALID;
+        }
+
         if ($arg1) {
             $io->note(sprintf('You passed Plaintiff contract: %s', $arg1));
             $io->note(sprintf('%s signatures are worth: %s points', $plaintiff->getName(), $plaintiff->getTotalValue()));
@@ -70,32 +82,12 @@ class TrialCommand extends Command
         echo "Initializing Trial...\n\r";
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
-    {
-        $arg1 = $input->getArgument('arg1');
-        $arg2 = $input->getArgument('arg2');
-
-        if (!$this->validateSignature($arg1)) {
-            $output->writeln("First argument is not valid. Maximum 3 signatures per contract");
-            exit();
-//            return Command::INVALID;
-
-        }
-        if (!$this->validateSignature($arg2)) {
-            $output->writeln("Second argument is not valid. Maximum 3 signatures per contract");
-            exit();
-//            return Command::FAILURE;
-        }
-    }
-
     private function validateSignature($arg): bool
     {
         $length = strlen($arg);
-        if ($length > 3) {
+        if ($length > self::MAX) {
             return false;
         }
         return true;
     }
-
-
 }
