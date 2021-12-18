@@ -25,11 +25,9 @@ class ContractTest extends TestCase
     public function testTrialVerdict(): void
     {
         $trial = new Trial();
-        $plaintiff = new Contract('pepe', 'KNV', false, false);
+        $plaintiff = new Contract('pepe', 'KK', false, false);
         $defendant = new Contract('pepe', 'KNN', false, false);
-        $trial->getVerdict($plaintiff,$defendant);
-
-        // y aqui la he cagao pq me toca rehacer todo el metodo pq no hay manera de evaluar los dumps
-
+        $winner= $trial->getVerdict($plaintiff,$defendant);
+        $this->assertEquals(-1, $winner,'Plaintiff wins the trial with this inputs');
     }
 }
