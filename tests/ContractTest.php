@@ -2,8 +2,8 @@
 
 namespace App\Tests;
 
-use App\Entity\Contract;
-use App\Entity\Trial;
+use App\Model\Trial;
+use App\Model\Contract;
 use PHPUnit\Framework\TestCase;
 
 class ContractTest extends TestCase
