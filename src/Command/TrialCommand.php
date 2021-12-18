@@ -20,11 +20,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class TrialCommand extends Command
 {
     private Trial $trial;
+    private TrialResultView $trialResultView;
 
-    public function __construct(Trial $trial)
+    public function __construct(Trial $trial, TrialResultView $trialResultView)
     {
         parent::__construct();
         $this->trial = $trial;
+        $this->trialResultView = $trialResultView;
     }
 
 
@@ -56,8 +58,7 @@ class TrialCommand extends Command
 
         $winner = $this->trial->getVerdict($plaintiff, $defendant);
 
-        $trialResult = new TrialResultView();
-        $message = $trialResult->prepareVerdict($winner, $plaintiff, $defendant);
+        $message = $this->trialResultView->prepareVerdict($winner, $plaintiff, $defendant);
 
         $io->note(sprintf('Final verdict: %s', $message));
 
