@@ -1,12 +1,7 @@
 <?php
 
-namespace App\Entity;
+namespace App\Model;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Entity(repositoryClass=ContractRepository::class)
- */
 class Contract
 {
 
@@ -14,32 +9,15 @@ class Contract
     private const N = 2;
     private const V = 1;
 
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $name;
 
-
-    /**
-     * @ORM\Column(type="array")
-     */
     private $signature = [];
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $total_value;
+    private $totalValue;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $has_king;
+    private $hasKing;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $has_hash;
+    private $hasHash;
 
     /**
      * @param $name
@@ -49,8 +27,8 @@ class Contract
     {
         $this->name = $name;
         $this->signature = str_split($signature);
-        $this->has_hash = $this->hasHash($this->signature);
-        $this->total_value = $this->getTotal($this->signature);
+        $this->hasHash = $this->hasHash($this->signature);
+        $this->totalValue = $this->getTotal($this->signature);
     }
 
 
@@ -64,18 +42,19 @@ class Contract
         return false;
 
     }
+
     public function getTotal(array $word): int
     {
         $accum = 0;
         foreach ($word as $item) {
             if ($item == 'K') {
-                $this->has_king = true;
+                $this->hasKing = true;
                 $accum += self::K;
             }
             if ($item == 'N') {
                 $accum += self::N;
             }
-            if ($item == 'V' && !$this->has_king) {
+            if ($item == 'V' && !$this->hasKing) {
                 $accum += self::V;
             }
         }
@@ -98,36 +77,36 @@ class Contract
 
     public function getHasKing(): ?bool
     {
-        return $this->has_king;
+        return $this->hasKing;
     }
 
-    public function setHasKing(?bool $has_king): self
+    public function setHasKing(?bool $hasKing): self
     {
-        $this->has_king = $has_king;
+        $this->hasKing = $hasKing;
 
         return $this;
     }
 
     public function getHasHash(): ?bool
     {
-        return $this->has_hash;
+        return $this->hasHash;
     }
 
-    public function setHasHash(?bool $has_hash): self
+    public function setHasHash(?bool $hasHash): self
     {
-        $this->has_hash = $has_hash;
+        $this->hasHash = $hasHash;
 
         return $this;
     }
 
     public function getTotalValue(): ?int
     {
-        return $this->total_value;
+        return $this->totalValue;
     }
 
-    public function setTotalValue(?int $total_value): self
+    public function setTotalValue(?int $totalValue): self
     {
-        $this->total_value = $total_value;
+        $this->totalValue = $totalValue;
 
         return $this;
     }
@@ -143,7 +122,6 @@ class Contract
 
         return $this;
     }
-
 
 
 }
