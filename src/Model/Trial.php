@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Entity;
+namespace App\Model;
+
 
 class Trial
 {
-    public function getVerdict(Contract $plaintiff, Contract $defendant): void
+    public function getVerdict(Contract $plaintiff, Contract $defendant): int
     {
         if ($plaintiff->getTotalValue() > $defendant->getTotalValue()) {
-            dump('Plaintiff (' . $plaintiff->getTotalValue() . ' points) wins the trial over defendant (' . $defendant->getTotalValue() . ' points)');
+            return -1;
         }
         if ($defendant->getTotalValue() > $plaintiff->getTotalValue()) {
-            dump('Defendant (' . $defendant->getTotalValue() . ' points) wins the trial over plaintiff (' . $plaintiff->getTotalValue() . ' points)');
+            return 1;
         }
         if ($defendant->getTotalValue() == $plaintiff->getTotalValue()) {
-            dump('It\'s a draw. The score was ' . $plaintiff->getTotalValue() . ' all ');
+            return 0;
         }
     }
 
