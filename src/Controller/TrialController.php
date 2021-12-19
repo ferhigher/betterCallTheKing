@@ -32,7 +32,7 @@ class TrialController extends AbstractController
 
         return new JsonResponse(['Status' => 'Trial finished',
             'Verdict' => $message,
-            'To win:' => $conjecture
+            'Conjecture to win:' => $conjecture
         ], Response::HTTP_OK);
     }
 
@@ -45,15 +45,33 @@ class TrialController extends AbstractController
     public function hashedNeeds(Contract $plaintiff, Trial $trial, Contract $defendant): string
     {
         $message = '';
-        if ($plaintiff->getHasHash() && !$defendant->getHasHash()) {
-            $diff = $trial->needMore($plaintiff, $defendant);
-            $message = sprintf('Plaintiff at least needs %s points to win this trial', ($diff + 1));
-        }
-        if ($defendant->getHasHash()) {
-            $diff = $trial->needMore($defendant, $plaintiff);
-            $message = sprintf('Defendant at least needs %s points to win this trial', ($diff + 1));
-        }
 
+        if ($plaintiff->getHasHash() && !$defendant->getHasHash()) {
+            $message = $this->getMessage($trial, $plaintiff, $defendant);
+        }
+        if ($defendant->getHasHash() && !$plaintiff->getHasHash()) {
+            $message = $this->getMessage($trial, $defendant, $plaintiff);
+        }
+        return $message;
+    }
+
+    /**
+     * @param Trial $trial
+     * @param Contract $defendant
+     * @param Contract $plaintiff
+     * @return string
+     */
+    public function getMessage(Trial $trial, Contract $defendant, Contract $plaintiff): string
+    {
+        $diff = $trial->needMore($defendant, $plaintiff);
+        $message = sprintf('Defendant at least needs %s points to win this trial. That means: ', ($diff + 1));
+        $conjecture = $defendant->valueToSignatures($diff + 1, $defendant->getHasKing());
+
+        foreach ($conjecture as $item) {
+            $letter = array_search($item, $conjecture);
+            $submessage = sprintf('%s signatures type %s, ', $item, $letter);
+            $message .= $submessage;
+        }
         return $message;
     }
 

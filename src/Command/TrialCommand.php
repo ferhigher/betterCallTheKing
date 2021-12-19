@@ -71,8 +71,10 @@ class TrialCommand extends Command
         $winner = $this->trial->getVerdict($plaintiff, $defendant);
 
         $message = $this->trialResultView->prepareVerdict($winner, $plaintiff, $defendant);
+        $conjecture = $this->hashedNeeds($plaintiff, $this->trial, $defendant);
 
         $io->note(sprintf('Final verdict: %s', $message));
+        $io->note(sprintf('Conjecture to win: %s', $conjecture));
 
         return Command::SUCCESS;
     }
@@ -89,5 +91,32 @@ class TrialCommand extends Command
             return false;
         }
         return true;
+    }
+
+    public function hashedNeeds(Contract $plaintiff, Trial $trial, Contract $defendant): string
+    {
+        $message = '';
+
+        if ($plaintiff->getHasHash() && !$defendant->getHasHash()) {
+            $message = $this->getMessage($trial, $plaintiff, $defendant);
+        }
+        if ($defendant->getHasHash() && !$plaintiff->getHasHash()) {
+            $message = $this->getMessage($trial, $defendant, $plaintiff);
+        }
+        return $message;
+    }
+
+    public function getMessage(Trial $trial, Contract $defendant, Contract $plaintiff): string
+    {
+        $diff = $trial->needMore($defendant, $plaintiff);
+        $message = sprintf('Defendant at least needs %s points to win this trial. That means: ', ($diff + 1));
+        $conjecture = $defendant->valueToSignatures($diff + 1, $defendant->getHasKing());
+
+        foreach ($conjecture as $item) {
+            $letter = array_search($item, $conjecture);
+            $submessage = sprintf('%s signatures type %s, ', $item, $letter);
+            $message .= $submessage;
+        }
+        return $message;
     }
 }
