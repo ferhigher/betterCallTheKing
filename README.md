@@ -13,6 +13,12 @@ composer install
 ## Execute through endpoint
 Normal trial (First phase of the exercise).
 
+For this we need the symfony server working:
+
+``` 
+symfony serve -d
+ ```
+Now we can use an url like this:
 ```
 https://127.0.0.1:8000/trial?plaintiff=KN&defendant=NVV
 ```
