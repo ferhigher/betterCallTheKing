@@ -44,7 +44,7 @@ class TrialController extends AbstractController
      */
     public function hashedNeeds(Contract $plaintiff, Trial $trial, Contract $defendant): string
     {
-        $message = '';
+        $message = 'N/A';
         $trialResult = new TrialResultView();
 
         if ($plaintiff->getHasHash() && !$defendant->getHasHash()) {

@@ -95,7 +95,7 @@ class TrialCommand extends Command
 
     public function hashedNeeds(Contract $plaintiff, Trial $trial, Contract $defendant): string
     {
-        $message = '';
+        $message = 'N/A';
 
         if ($plaintiff->getHasHash() && !$defendant->getHasHash()) {
             $message = $this->trialResultView->getMessage($trial, $plaintiff, $defendant);
