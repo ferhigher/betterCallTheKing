@@ -51,3 +51,8 @@ If there's a hash in any of the arguments, the conjecture to win will be calcula
 ```
 php bin/console app:Trial NNN NN#
 ```
+
+To launch tests:
+``` 
+php ./vendor/bin/phpunit
+```
