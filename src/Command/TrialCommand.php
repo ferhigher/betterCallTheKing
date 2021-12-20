@@ -98,25 +98,12 @@ class TrialCommand extends Command
         $message = '';
 
         if ($plaintiff->getHasHash() && !$defendant->getHasHash()) {
-            $message = $this->getMessage($trial, $plaintiff, $defendant);
+            $message = $this->trialResultView->getMessage($trial, $plaintiff, $defendant);
         }
         if ($defendant->getHasHash() && !$plaintiff->getHasHash()) {
-            $message = $this->getMessage($trial, $defendant, $plaintiff);
+            $message = $this->trialResultView->getMessage($trial, $defendant, $plaintiff);
         }
         return $message;
     }
 
-    public function getMessage(Trial $trial, Contract $defendant, Contract $plaintiff): string
-    {
-        $diff = $trial->needMore($defendant, $plaintiff);
-        $message = sprintf('Defendant at least needs %s points to win this trial. That means: ', ($diff + 1));
-        $conjecture = $defendant->valueToSignatures($diff + 1, $defendant->getHasKing());
-
-        foreach ($conjecture as $item) {
-            $letter = array_search($item, $conjecture);
-            $submessage = sprintf('%s signatures type %s, ', $item, $letter);
-            $message .= $submessage;
-        }
-        return $message;
-    }
 }
